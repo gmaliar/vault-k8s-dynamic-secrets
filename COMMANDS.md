@@ -3,7 +3,7 @@ brew install kubernetes-helm vault consul kubectl
 brew cask install virtualbox
 brew cask install minikube
 
-minikube --vm-driver=virualbox start
+minikube --vm-driver=virtualbox start
 helm init
 
 helm install --name consul stable/consul --set Replicas=1
