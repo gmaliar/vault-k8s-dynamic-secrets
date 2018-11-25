@@ -1,4 +1,4 @@
-```sh
+```shell
 brew install kubernetes-helm vault consul kubectl
 brew cask install virtualbox
 brew cask install minikube
@@ -108,6 +108,7 @@ apk add curl postgresql-client jq
 
 VAULT_K8S_LOGIN=$(curl --request POST --data '{"jwt": "'"$KUBE_TOKEN"'", "role": "postgres"}' http://errant-mandrill-vault:8200/v1/auth/kubernetes/login)
 echo $VAULT_K8S_LOGIN | jq
+```
 
 ```json
 {
@@ -139,10 +140,12 @@ echo $VAULT_K8S_LOGIN | jq
 }
 ```
 
+```shell
 X_VAULT_TOKEN=$(echo $VAULT_K8S_LOGIN | jq -r '.auth.client_token')
 POSTGRES_CREDS=$(curl --header "X-Vault-Token: $X_VAULT_TOKEN" http://errant-mandrill-vault:8200/v1/database/creds/postgres-role)
 
 echo $POSTGRES_CREDS | jq
+```
 
 ```json
 {
@@ -160,6 +163,7 @@ echo $POSTGRES_CREDS | jq
 }
 ```
 
+```shell
 PGUSER=$(echo $POSTGRES_CREDS | jq -r '.data.username')
 export PGPASSWORD=$(echo $POSTGRES_CREDS | jq -r '.data.password')
 psql -h intended-moth-postgresql -U $PGUSER rails_development -c 'SELECT * FROM pg_catalog.pg_tables;'
